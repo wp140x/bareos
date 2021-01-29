@@ -2,7 +2,7 @@
    BAREOS® - Backup Archiving REcovery Open Sourced
 
    Copyright (C) 2014-2017 Planets Communications B.V.
-   Copyright (C) 2014-2020 Bareos GmbH & Co. KG
+   Copyright (C) 2014-2021 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -225,11 +225,10 @@ bool droplet_device::walk_chunks(const char* dirname,
   dpl_status_t callback_status;
   PoolMem path(PM_NAME);
 
-  bool found = true;
   int i = 0;
   int tries = 0;
 
-  while ((i < max_chunks_) && (found) && (retval)) {
+  while ((i < max_chunks_) && retval) {
     path.bsprintf("%s/%04d", dirname, i);
 
     auto sysmd = dpl_sysmd_dup(&sysmd_);
@@ -247,9 +246,9 @@ bool droplet_device::walk_chunks(const char* dirname,
         } else {
           Mmsg2(errmsg, _("Operation failed on chunk %s: ERR=%s."),
                 path.c_str(), dpl_status_str(callback_status));
+          Dmsg0(100, errmsg);
           dev_errno = DropletErrnoToSystemErrno(callback_status);
-          /* exit loop */
-          retval = false;
+          retval = false; // exit loop
         }
         break;
       case DPL_ENOENT:
@@ -257,28 +256,32 @@ bool droplet_device::walk_chunks(const char* dirname,
           Dmsg1(1000, "chunk %s does not exist. Skipped.\n", path.c_str());
           i++;
         } else {
-          Dmsg1(100, "chunk %s does not exist. Exiting.\n", path.c_str());
-          found = false;
+          Mmsg1(errmsg, "chunk %s does not exist. Exiting.\n", path.c_str());
+          Dmsg0(100, errmsg);
+          dev_errno = DropletErrnoToSystemErrno(status);
+          retval = false; // exit loop
         }
         break;
       default:
         ++tries;
         if (tries < NUMBER_OF_RETRIES) {
-          Dmsg2(100, "chunk %s failure: %s. Try again (%d).\n", path.c_str(),
+          Dmsg3(100, "chunk %s failure: %s. Try again (%d).\n", path.c_str(),
                 dpl_status_str(callback_status), tries);
           Bmicrosleep(INFLIGT_RETRY_TIME, 0);
         } else {
-          Dmsg2(100, "chunk %s failure: %s. Exiting after %d tries.\n",
+          Mmsg3(errmsg, "chunk %s failure: %s. Exiting after %d tries.\n",
                 path.c_str(), dpl_status_str(callback_status), tries);
-          found = false;
+          Dmsg0(100, errmsg);
+          dev_errno = DropletErrnoToSystemErrno(status);
+          retval = false; // exit loop
         }
         break;
-    }
+    } // switch (status)
     if (sysmd) {
       dpl_sysmd_free(sysmd);
       sysmd = nullptr;
     }
-  }
+  } // while ((i < max_chunks_) && retval)
 
   return retval;
 }
