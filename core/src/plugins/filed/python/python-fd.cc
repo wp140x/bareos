@@ -187,7 +187,6 @@ bRC loadPlugin(PluginApiDefinition* lbareos_plugin_interface_version,
 {
   if (!Py_IsInitialized()) {
     Py_InitializeEx(0);
-
     // add bareos plugin path to python module search path
     PyObject* sysPath = PySys_GetObject((char*)"path");
     PyObject* pluginPath = PyUnicode_FromString(PLUGIN_DIR);
@@ -222,8 +221,10 @@ bRC loadPlugin(PluginApiDefinition* lbareos_plugin_interface_version,
 #endif
 
     mainThreadState = PyEval_SaveThread();
+    return bRC_OK;
+  } else {
+    return bRC_Error;
   }
-  return bRC_OK;
 }
 
 /**
