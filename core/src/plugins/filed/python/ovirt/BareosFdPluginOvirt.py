@@ -675,7 +675,7 @@ class BareosFdPluginOvirt(BareosFdPluginBaseclass.BareosFdPluginBaseclass):
             % (self.options["config_file"]),
         )
 
-        self.config = configparser.ConfigParser()
+        self.config = ConfigParser()
 
         try:
             self.config.readfp(open(self.options["config_file"]))
