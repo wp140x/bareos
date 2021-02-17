@@ -1,7 +1,7 @@
 /*
    BAREOS® - Backup Archiving REcovery Open Sourced
 
-   Copyright (C) 2020-2020 Bareos GmbH & Co. KG
+   Copyright (C) 2020-2021 Bareos GmbH & Co. KG
 
    This program is Free Software; you can redistribute it and/or
    modify it under the terms of version three of the GNU Affero General Public
@@ -27,6 +27,12 @@
 #endif
 
 #include "lib/edit.h"
+#if defined(__GNUC__) && !defined(__llvm__) && __GNUC__ < 7
+#  include <experimental/string_view>
+#  define string_view experimental::string_view
+#else
+#  include <string_view>
+#endif
 
 TEST(edit, convert_number_to_siunits)
 {
@@ -52,6 +58,8 @@ TEST(edit, convert_number_to_siunits)
 TEST(edit, convert_siunits_to_numbers)
 {
   {
+    std::string_view str_view = "1 k";
+    std::cout << str_view << std::endl;
     char str[] = "1 k";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
@@ -118,7 +126,7 @@ TEST(edit, convert_siunits_to_numbers)
     char str[] = "1 tb";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
-    ASSERT_EQ(retvalue, 1000000000000);
+    ASSERT_EQ(retvalue, 1'000'000'000'000);
   }
 
   // pebibyte
@@ -126,14 +134,14 @@ TEST(edit, convert_siunits_to_numbers)
     char str[] = "1 p";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
-    ASSERT_EQ(retvalue, 1125899906842624);
+    ASSERT_EQ(retvalue, 1'125'899'906'842'624);
   }
   // petabyte
   {
     char str[] = "1 pb";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
-    ASSERT_EQ(retvalue, 1000000000000000);
+    ASSERT_EQ(retvalue, 1'000'000'000'000'000);
   }
 
   // exbibyte
@@ -141,14 +149,14 @@ TEST(edit, convert_siunits_to_numbers)
     char str[] = "1 e";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
-    ASSERT_EQ(retvalue, 1152921504606846976);
+    ASSERT_EQ(retvalue, 1'152'921'504'606'846'976);
   }
   // exabyte
   {
     char str[] = "1 eb";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
-    ASSERT_EQ(retvalue, 1000000000000000000);
+    ASSERT_EQ(retvalue, 1'000'000'000'000'000'000);
   }
   // size_to_uint64 only checks for first modifier so the following does not
   // work
