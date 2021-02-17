@@ -329,13 +329,12 @@ if(developer)
   add_definitions("-DDEVELOPER=1")
 endif()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-register")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-register")
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-register")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-register")
-endif()
+# if(CMAKE_CXX_COMPILER_ID MATCHES "Clang") set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}
+# -Wno-register") set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-register")
+# endif()
 
 include(BareosSetVariableDefaults)
 
