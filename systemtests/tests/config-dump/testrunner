@@ -107,7 +107,7 @@ diff_files()
     base1="$(basename "$file1" .conf)"
     base2="$(basename "$file2" .conf)"
     difffile="${tmp}/${base1}_${base2}.diff"
-    DIFF_CMD='diff "${file1}" "${file2}"'
+    DIFF_CMD='diff --ignore-blank-lines --ignore-trailing-space "${file1}" "${file2}"'
     if ! eval "$DIFF_CMD" > "${difffile}"; then
         echo "Differences found. Output of:"
         eval "echo $DIFF_CMD"
