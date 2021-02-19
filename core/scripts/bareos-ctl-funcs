@@ -86,6 +86,7 @@ killproc() {
                fi
             fi
          fi
+         sleep 1
          if ${PS} -p "$pid" >/dev/null 2>&1; then
             success "$base shutdown"
          else
