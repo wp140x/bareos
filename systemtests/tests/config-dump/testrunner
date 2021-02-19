@@ -94,6 +94,12 @@ END_OF_DATA
 
     stop_bareos > $output 2>&1
 
+    count=10
+    while [ $count -gt 0 ] && ${rscripts}/bareos-ctl-dir status; do
+        sleep 1
+        count=$((count-1))
+    done
+    
     if ${rscripts}/bareos-ctl-dir status >/dev/null; then
         set_error "Director is not stopped."
         exit 1
