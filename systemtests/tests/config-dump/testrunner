@@ -66,6 +66,7 @@ dump_config()
 
     DESC="dump_config ${configfile} ext=${ext}"
     print_debug "*** start $DESC"
+    set -x
     
     "${BAREOS_DIRECTOR_BINARY}" -c "${configfile}" -xc > $tmp/bareos-dir-xc-${ext}.conf
 
@@ -108,6 +109,8 @@ END_OF_DATA
     #    exit 1
     #fi
     sleep 1
+
+    set +x
     
     print_debug "*** end   $DESC"
 }
