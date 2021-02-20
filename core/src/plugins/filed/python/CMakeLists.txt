@@ -59,16 +59,17 @@ if(Python2_FOUND)
   target_include_directories(
     bareosfd-python2-module-tester PUBLIC SYSTEM ${Python2_INCLUDE_DIRS}
   )
-
-  add_test(NAME bareosfd-python2-module-tester
-           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bareosfd-python2-module-tester
-  )
-  set_property(
-    TEST bareosfd-python2-module-tester
-    PROPERTY
-      ENVIRONMENT
-      PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR}/test/:${CMAKE_CURRENT_BINARY_DIR}/pythonmodules:${CMAKE_CURRENT_SOURCE_DIR}/pyfiles
-  )
+  if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    add_test(NAME bareosfd-python2-module-tester
+             COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bareosfd-python2-module-tester
+    )
+    set_property(
+      TEST bareosfd-python2-module-tester
+      PROPERTY
+        ENVIRONMENT
+        PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR}/test/:${CMAKE_CURRENT_BINARY_DIR}/pythonmodules:${CMAKE_CURRENT_SOURCE_DIR}/pyfiles
+    )
+  endif()
 endif()
 
 if(Python3_FOUND AND NOT HAVE_WIN32)
