@@ -70,7 +70,7 @@ dump_config()
     if [ "$ext" = "full1" ]; then
         set -x
         "${BAREOS_DIRECTOR_BINARY}" -c "${configfile}" -xc -d 1000
-    }
+    fi
 
     "${BAREOS_DIRECTOR_BINARY}" -c "${configfile}" -xc > $tmp/bareos-dir-xc-${ext}.conf
 
