@@ -27,12 +27,6 @@
 #endif
 
 #include "lib/edit.h"
-#if defined(__GNUC__) && !defined(__llvm__) && __GNUC__ < 7
-#  include <experimental/string_view>
-#  define string_view experimental::string_view
-#else
-#  include <string_view>
-#endif
 
 TEST(edit, convert_number_to_siunits)
 {
@@ -58,8 +52,6 @@ TEST(edit, convert_number_to_siunits)
 TEST(edit, convert_siunits_to_numbers)
 {
   {
-    std::string_view str_view = "1 k";
-    std::cout << str_view << std::endl;
     char str[] = "1 k";
     uint64_t retvalue = 0;
     size_to_uint64(str, &retvalue);
