@@ -1069,7 +1069,7 @@ static void speed_test()
   }
 }
 
-const uint64_t num_recs = 1'0000LL;
+const uint64_t num_recs = 10'000LL;
 
 static bool write_two_files()
 {
