@@ -60,7 +60,9 @@ if(Python2_FOUND)
   target_include_directories(
     bareosfd-python2-module-tester PUBLIC SYSTEM ${Python2_INCLUDE_DIRS}
   )
-  target_compile_options(bareosfd-python2-module-tester PUBLIC ${Python2_CCSHARED})
+  target_compile_options(
+    bareosfd-python2-module-tester PUBLIC ${Python2_CCSHARED}
+  )
 
   add_test(NAME bareosfd-python2-module-tester
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bareosfd-python2-module-tester
@@ -108,10 +110,7 @@ if(Python2_FOUND)
                INCLUDE_DIRECTORIES "${pymod2_include_dirs}"
   )
   if(NOT "${Python2_CCSHARED}" STREQUAL "")
-    set_property(
-      TARGET bareosfd-python2-module PROPERTY COMPILE_OPTIONS
-                                              ${Python2_CCSHARED}
-    )
+    target_compile_options(bareosfd-python2-module PUBLIC ${Python2_CCSHARED})
   endif()
   target_link_libraries(bareosfd-python2-module bareos ${Python2_LIBRARIES})
 

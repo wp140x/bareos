@@ -369,6 +369,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
   )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m${WINDOWS_BITS} -mwin32 -mthreads")
 
+  # c++17 removed register keyword
+  set(Python2_CCSHARED -Wno-register)
+
   set(Python2_SITELIB ${plugindir})
   set(Python3_SITELIB ${plugindir})
 endif()
