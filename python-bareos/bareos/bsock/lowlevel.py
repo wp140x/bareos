@@ -102,7 +102,12 @@ class LowLevel(object):
         self.max_reconnects = 0
         self.tls_psk_enable = True
         self.tls_psk_require = False
-        self.tls_version = ssl.PROTOCOL_TLS
+        if hasattr(ssl, "PROTOCOL_TLS"):
+            self.tls_version = ssl.PROTOCOL_TLS
+        else:
+            # ssl.PROTOCOL_SSLv23 is deprecated since version Python >= 2.7.13
+            # Use PROTOCOL_TLS instead.
+            self.tls_version = ssl.PROTOCOL_SSLv23
         self.connection_type = None
         self.requested_protocol_version = None
         self.protocol_messages = ProtocolMessages()

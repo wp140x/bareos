@@ -11,6 +11,7 @@ and since Bareos version 20 this project adheres to [Semantic Versioning](https:
 - fix parallel python plugin jobs [PR #729]
 - fix oVirt plugin problem with config file [PR #729]
 - [Issue #1316]: storage daemon loses a configured device instance [PR #739]
+- fix python-bareos for Python < 2.7.13 [PR #748]
 
 
 ### Added
@@ -19,7 +20,7 @@ and since Bareos version 20 this project adheres to [Semantic Versioning](https:
 - added an informative debugmessage when a dynamic backend cannot be loaded [PR #740]
 
 ### Changed
-- Package **bareos-database-postgresql**: add recommendation for package **dbconfig-pgsql**.
+- Package **bareos-database-postgresql**: add recommendation for package **dbconfig-pgsql** [PR #723]
 - Adapt the init scripts for some platform to not refer to a specific (outdated) configuration file, but to use the default config file instead.
 - scripts: cleaned up code for postgresql db creation [PR #709]
 - Change Copy Job behaviour regarding Archive Jobs [PR #717]
