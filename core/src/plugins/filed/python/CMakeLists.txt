@@ -30,6 +30,7 @@ if(Python2_FOUND)
   target_link_libraries(python-fd ${Python2_LIBRARIES} bareos)
   target_include_directories(python-fd PUBLIC SYSTEM ${Python2_INCLUDE_DIRS})
   target_compile_definitions(python-fd PUBLIC PY2MODDIR=\"${Python2_SITELIB}\")
+  target_compile_options(python-fd PUBLIC ${Python2_CCSHARED})
   add_dependencies(bareos-fd python-fd)
   add_dependencies(python-fd bareosfd-python2-module)
 endif()
@@ -59,6 +60,7 @@ if(Python2_FOUND)
   target_include_directories(
     bareosfd-python2-module-tester PUBLIC SYSTEM ${Python2_INCLUDE_DIRS}
   )
+  target_compile_options(bareosfd-python2-module-tester PUBLIC ${Python2_CCSHARED})
 
   add_test(NAME bareosfd-python2-module-tester
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/bareosfd-python2-module-tester

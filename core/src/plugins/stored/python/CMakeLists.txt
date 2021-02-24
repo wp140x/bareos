@@ -26,6 +26,7 @@ if(Python2_FOUND)
   target_link_libraries(python-sd ${Python2_LIBRARIES} bareos)
   target_include_directories(python-sd PUBLIC SYSTEM ${Python2_INCLUDE_DIRS})
   target_compile_definitions(python-sd PUBLIC PY2MODDIR=\"${Python2_SITELIB}\")
+  target_compile_options(python-sd PUBLIC ${Python2_CCSHARED})
   add_dependencies(python-sd bareossd-python2-module)
 
   set(PYFILES pyfiles/bareos-sd-class-plugin.py
